@@ -1,0 +1,34 @@
+/* dashboard.css - Stylesheet for the Textual Dashboard App */
+
+/* Style the entire screen */
+Screen {
+    background: #0d1117; /* A dark, modern background color */
+    color: #c9d1d9;      /* A soft white for text */
+}
+
+/* Define the main layout grid */
+#app-grid {
+    layout: horizontal; /* This is key: it splits the screen left-to-right */
+}
+
+/* Style the sidebar container */
+#sidebar-container {
+    width: 35; /* Give the sidebar a fixed width of 35 characters */
+    height: 100%;
+    border-right: thick #2a7a3e; /* A green border to separate it */
+    padding: 1;
+    background: #161b22; /* A slightly lighter background for the sidebar */
+}
+
+#sidebar-title {
+    content-align: center middle;
+    width: 100%;
+    margin-bottom: 1;
+}
+
+/* Style the main content area */
+#main-content {
+    width: 1fr; /* '1fr' means it takes up 1 fraction of the remaining space */
+    height: 100%;
+    padding: 1 2;
+}

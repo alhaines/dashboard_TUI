@@ -1,0 +1,30 @@
+#!/bin/bash
+# example journal entry script
+
+ARGS=1
+E_BADARGS=65
+if [ $# -ne "$ARGS" ]
+then
+   echo "Usage: `basename $0` source "
+   exit $E_BADARGS
+fi
+Name="$1"
+Today=$(date +%Y%m%d%I%M%S)
+logFile="/tmp/$Today.log"
+# change UUID to your home
+nfsb=`ls /dev/disk/by-uuid/ |grep b7092ed6-823d-49f7-99d7-182cca804661`
+if [ -z "$nfsb" ]
+then
+echo "Your System is not ready!"  >>"$logFile" 2>&1
+else
+echo "Connecting "  >>"$logFile" 2>&1
+MYSQL_DATABASE="als"
+
+# Get Update the database
+TABLES=$(mysql --defaults-file=/home/al/.my.cnf -D ${MYSQL_DATABASE} -sN -e "INSERT INTO journal (title, note) VALUES ('$Today', '$Name')")
+
+echo $TABLES
+
+
+fi
+
