@@ -1,7 +1,6 @@
 # Haines Homelab Dashboard v1.0
 
 A simple, fast, and efficient Text-based User Interface (TUI) for running common homelab scripts and commands. The dashboard is built with the Python Textual framework and is designed to be driven entirely by the keyboard.
-Provided for your use are some sample apps to make your bash experience enjoyable! put them in your path and edit dashboard_commands.sql with your paths
 
 ## Features
 
@@ -19,33 +18,39 @@ Provided for your use are some sample apps to make your bash experience enjoyabl
 
 ## Installation
 
-1.  Place the entire project folder on your system (e.g., in `~/projects/dashboard_v1.0`).
-2.  Ensure the `MySql.py` module is present in the directory.
-3.  Make the installation script executable: `chmod +x install.sh`
-4.  Run the installation script: `./install.sh`
+1.  Download and extract the project ZIP file to a location of your choice (e.g., `~/Downloads/dashboard_TUI`).
+2.  Navigate into the project directory in your terminal:
+    `cd /path/to/dashboard_TUI`
+3.  Make the installation script executable:
+    `chmod +x install.sh`
+4.  Run the installation script from within the project directory:
+    `./install.sh`
 
-The script will check for necessary system tools (`python3`, `pip`) and install the required Python libraries listed in `requirements.txt`.
+The script will guide you through installing dependencies.
+
+## Manual Documentation Installation (Optional)
+
+This project includes a `man` page for easy reference. To install it manually:
+
+1.  Ensure the target directory exists:
+    `sudo mkdir -p /usr/local/share/man/man1`
+2.  Copy the `man` page file to the system directory:
+    `sudo cp /path/to/your/dashboard_TUI/dashboard.1 /usr/local/share/man/man1/`
+3.  Compress the `man` page (optional but good practice):
+    `sudo gzip /usr/local/share/man/man1/dashboard.1`
+4.  Update the `man` database:
+    `sudo mandb`
+
+After installation, you can view the documentation at any time by running `man dashboard`.
 
 ## Database Setup
 
-Before running the dashboard for the first time, you must create the `dashboard_commands` table in your `als` database. You can use the following SQL command:
+... (Rest of the file remains the same) ...
+## Database Setup
 
-```sql
-CREATE TABLE `dashboard_commands` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `key` char(1) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `command_type` enum('shell','python','internal') NOT NULL,
-  `command_string` text NOT NULL,
-  `requires_input` tinyint(1) NOT NULL DEFAULT '0',
-  `quote_input` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
+Before running the dashboard for the first time, you must create the `dashboard_commands` table. An example SQL file, `dashboard_commands.sql`, is included in this project to help you get started. You can import this file using a tool like phpMyAdmin or run it from the command line:
 
-You can then populate this table with the commands you wish to appear in the menu.
+`mysql -u your_user -p your_database < dashboard_commands.sql`
 
 ## Usage
 
