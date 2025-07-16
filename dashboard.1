@@ -1,0 +1,76 @@
+." dashboard.1 - Manual page for the Haines Homelab Dashboard
+."
+." Copyright 2025 AL Haines
+."
+.TH dashboard 1 "July 2025" "dashboard v1.0" "User Commands"
+
+.SH NAME
+dashboard \- A Text-based User Interface (TUI) for launching homelab scripts.
+
+.SH SYNOPSIS
+.B dashboard.py
+
+.SH DESCRIPTION
+.B dashboard
+is a simple, fast, and efficient TUI for running common homelab scripts and commands. It is built with the Python Textual framework and is designed to be driven entirely by the keyboard.
+
+The menu of available commands is generated dynamically from a MySQL database, allowing for easy customization without modifying the application code. It supports commands that require user input, streaming output for long-running processes, and launching full-screen terminal applications like far2l.
+
+.SH REQUIREMENTS
+The application requires Python 3 and several Python libraries (Textual, PyMySQL), which can be installed via the included \fIinstall.sh\fP script. It also requires access to a MySQL database containing the \fIdashboard_commands\fP table.
+
+.SH DATABASE SETUP
+The menu is controlled by the \fBdals.dashboard_commands\fP table. This table must be created and populated before running the application. The required schema is:
+.P
+.B CREATE TABLE `dashboard_commands` (
+.br
+.B   `id` int NOT NULL AUTO_INCREMENT,
+.br
+.B   `key` char(1) NOT NULL,
+.br
+.B   `name` varchar(255) NOT NULL,
+.br
+.B   `command_type` enum('shell','python','internal') NOT NULL,
+.br
+.B   `command_string` text NOT NULL,
+.br
+.B   `requires_input` tinyint(1) NOT NULL DEFAULT '0',
+.br
+.B   `quote_input` tinyint(1) NOT NULL DEFAULT '0',
+.br
+.B   `enabled` tinyint(1) NOT NULL DEFAULT '1',
+.br
+.B   PRIMARY KEY (`id`),
+.br
+.B   UNIQUE KEY `key` (`key`)
+.br
+.B );
+.P
+Each row in this table corresponds to a menu item in the dashboard.
+
+.SH USAGE
+To run the dashboard, execute the main Python script:
+.P
+.BR python3 /path/to/project/dashboard.py
+
+.SH KEYBINDINGS
+.TP
+.B q
+Quit the application at any time.
+.TP
+.B [key]
+Press the character key corresponding to the desired menu item to execute the command.
+
+.SH FILES
+.TP
+.I ~/projects/dashboard_v1.0/
+The default project directory containing all application files.
+.TP
+.I ~/projects/dashboard_v1.0/dashboard.css
+The stylesheet that controls the appearance of the TUI.
+.TP
+.I ~/projects/dashboard_v1.0/install.sh
+The installation script to set up dependencies.
+
+.SH AUTHOR
+Written by AL Haines.
