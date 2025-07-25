@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `als`
+-- Database: `dashboard`
 --
 
 -- --------------------------------------------------------
@@ -39,15 +39,14 @@ CREATE TABLE `dashboard_commands` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `dashboard_commands`
+-- Sample 
 --
 
 INSERT INTO `dashboard_commands` (`id`, `key`, `name`, `command_type`, `command_string`, `requires_input`, `quote_input`, `enabled`) VALUES
-(1, 'a', 'Ask AI (ai01.py)', 'python', '/home/al/py/ai01.py ask', 1, 0, 1),
-(2, 'd', 'Add Journal Entry', 'shell', '/home/al/scripts/ju', 1, 1, 1),
+(1, 'a', 'Ask AI (ai01.py)', 'python', '/home/$USER/py/ai01.py ask', 1, 0, 1),
+(2, 'd', 'Add Journal Entry', 'shell', '/home/$USER/scripts/ju', 1, 1, 1),
 (3, 'm', 'File Manager', 'shell', 'far2l --tty', 0, 0, 1),
-(4, 'u', 'Update System', 'shell', 'sudo apt upgrade -y', 0, 0, 1),
-(5, 's', 'ShowME', 'shell', '~/py/showme.py', 1, 0, 1);
+(4, 'u', 'Update System', 'shell', 'sudo apt upgrade -y', 0, 0, 1);
 
 --
 -- Indexes for dumped tables
