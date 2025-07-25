@@ -43,11 +43,6 @@ This project includes a `man` page for easy reference. To install it manually:
 
 After installation, you can view the documentation at any time by running `man dashboard`.
 
-## Database Setup
-
-... (Rest of the file remains the same) ...
-## Database Setup
-
 Before running the dashboard for the first time, you must create the `dashboard_commands` table. An example SQL file, `dashboard_commands.sql`, is included in this project to help you get started. You can import this file using a tool like phpMyAdmin or run it from the command line:
 
 `mysql -u your_user -p your_database < dashboard_commands.sql`
