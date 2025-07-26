@@ -9,10 +9,11 @@ then
    exit $E_BADARGS
 fi
 Name="$1"
+Drvieid='b7092ed6-823d-49f7-99d7-182cca804661'
 Today=$(date +%Y%m%d%I%M%S)
 logFile="/tmp/$Today.log"
 # change UUID to your home
-nfsb=`ls /dev/disk/by-uuid/ |grep b7092ed6-823d-49f7-99d7-182cca804661`
+nfsb=`ls /dev/disk/by-uuid/ |grep $Drvieid`
 if [ -z "$nfsb" ]
 then
 echo "Your System is not ready!"  >>"$logFile" 2>&1
@@ -21,7 +22,7 @@ echo "Connecting "  >>"$logFile" 2>&1
 MYSQL_DATABASE="als"
 
 # Get Update the database
-TABLES=$(mysql --defaults-file=/home/al/.my.cnf -D ${MYSQL_DATABASE} -sN -e "INSERT INTO journal (title, note) VALUES ('$Today', '$Name')")
+TABLES=$(mysql --defaults-file=/home/$USER/.my.cnf -D ${MYSQL_DATABASE} -sN -e "INSERT INTO journal (title, note) VALUES ('$Today', '$Name')")
 
 echo $TABLES
 
