@@ -1,23 +1,20 @@
 /* dashboard.css - Stylesheet for the Textual Dashboard App */
 
-/* Style the entire screen */
 Screen {
-    background: #0d1117; /* A dark, modern background color */
-    color: #c9d1d9;      /* A soft white for text */
+    background: #0d1117;
+    color: #c9d1d9;
 }
 
-/* Define the main layout grid */
 #app-grid {
-    layout: horizontal; /* This is key: it splits the screen left-to-right */
+    layout: horizontal;
 }
 
-/* Style the sidebar container */
 #sidebar-container {
-    width: 35; /* Give the sidebar a fixed width of 35 characters */
+    width: 35;
     height: 100%;
-    border-right: thick #2a7a3e; /* A green border to separate it */
+    border-right: thick #2a7a3e;
     padding: 1;
-    background: #161b22; /* A slightly lighter background for the sidebar */
+    background: #161b22;
 }
 
 #sidebar-title {
@@ -26,9 +23,21 @@ Screen {
     margin-bottom: 1;
 }
 
-/* Style the main content area */
-#main-content {
-    width: 1fr; /* '1fr' means it takes up 1 fraction of the remaining space */
+/* --- THE LAYOUT FIX --- */
+/* This targets the Log widget specifically */
+Log {
+    /* This tells the widget to wrap long lines instead of scrolling */
+    overflow-x: hidden;
+    /* This ensures vertical scrolling is still available */
+    overflow-y: auto;
+}
+
+#main-container {
+    width: 1fr;
     height: 100%;
     padding: 1 2;
+}
+
+#command-input {
+    /* No changes here */
 }

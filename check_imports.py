@@ -62,7 +62,7 @@ def ensure_module(package_name, import_name=None):
         # importlib.util.find_spec is a robust way to check for module existence
         # without actually loading it fully, which can prevent some side effects.
         if importlib.util.find_spec(import_name):
-            print(f"INFO: '{import_name}' module already installed.", file=sys.stderr)
+            #print(f"INFO: '{import_name}' module already installed.", file=sys.stderr)
             return True
         else:
             raise ImportError # Force installation attempt if not found by spec

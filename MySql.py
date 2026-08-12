@@ -7,9 +7,13 @@
 # It adheres to modularity and securely retrieves database credentials from
 # the user-provided 'config.py' file.
 
+import re
+import sys
+import shlex
+import subprocess
+import os
 import pymysql
 import pymysql.cursors
-import sys
 
 # Initialize credential variables as None
 DB_HOST = None
@@ -223,3 +227,77 @@ def add_quotes_single(text):
     """
     text = str(text).replace('"', '`').replace("'", '%') # Ensure text is string
     return f"'{text}'"
+
+def get_service_status(service_name):
+    """
+    Runs 'systemctl status' and parses the output for key information.
+    """
+    try:
+        result = subprocess.run(
+            ['sudo', 'systemctl', 'status', service_name],
+            capture_output=True,
+            text=True,
+            check=False
+        )
+        output = result.stdout
+
+        # --- Initialize port to a default value ---
+        port_str = "N/A"
+
+        # --- Parse for Port (if it exists) ---
+        port_match = re.search(r"Listening at: http://[\d\.]+?:(\d+)", output)
+        if not port_match:
+            port_match = re.search(r"Listening on \[::\]:(\d+)", output)
+
+        if port_match:
+            port_str = port_match.group(1)
+
+        # --- Parse for Status ---
+        active_line = re.search(r"Active:\s+(.*)", output)
+        if not active_line:
+            return service_name, "[red]Not Found[/red]", "N/A", port_str
+
+        full_status_string = active_line.group(1).strip()
+        main_status_match = re.match(r"(\w+).*", full_status_string)
+        main_status = main_status_match.group(1) if main_status_match else "unknown"
+        time_since_match = re.search(r"since .*;\s+(.*)", full_status_string)
+        time_active = time_since_match.group(1).strip() if time_since_match else "N/A"
+
+        # --- Apply Color Coding ---
+        if "active (running)" in full_status_string:
+            status_color = "[bold green]Active (Running)[/bold green]"
+        elif "active (exited)" in full_status_string:
+            status_color = "[bold yellow]Active (Exited)[/bold yellow]"
+        elif "inactive" in full_status_string:
+            status_color = "[bold yellow]Inactive[/bold yellow]"
+        elif "failed" in full_status_string:
+            status_color = "[bold red]Failed[/bold red]"
+        else:
+            status_color = f"[white]{main_status}[/white]"
+
+        return service_name, status_color, time_active, port_str
+
+    except FileNotFoundError:
+        return service_name, "[bold red]Systemctl Not Found[/bold red]", "N/A", "N/A"
+    except Exception as e:
+        return service_name, f"[bold red]ERROR: {e}[/bold red]", "N/A", "N/A"
+
+def get_table(table, field):
+    """
+    Fetches the table from the MySQL database.
+    """
+    try:
+        db = MySQL()
+        query = "SELECT * FROM " + table
+        results = db.get_data(query)
+
+        if not results:
+            print("table not found in the database.", file=sys.stderr)
+            return []
+
+        # Correctly extract the service names from the 'title' column
+        return [row[field] for row in results]
+    except Exception as e:
+        # The KeyError 'service_name' will be caught here and printed.
+        print(f"Error fetching table from the database: {e}", file=sys.stderr)
+        return []
