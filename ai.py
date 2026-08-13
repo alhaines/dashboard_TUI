@@ -40,7 +40,7 @@ is_interactive = sys.stdout.isatty()
 console = Console(force_terminal=is_interactive, color_system='auto' if is_interactive else None)
 db_manager = MySQL()
 
-GEMINI_API_KEY = getattr(config, 'APIKEY', "AIzaSyAefOj1UCw4lCDzjppAVFatVsO2ace8Tac")
+GEMINI_API_KEY = getattr(config, 'APIKEY', "APIKEY")
 if not GEMINI_API_KEY:
     console.print("[bold red]ERROR: Gemini API key is missing in config.py.[/bold red]")
     sys.exit(1)
